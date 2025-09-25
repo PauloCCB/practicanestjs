@@ -1,7 +1,8 @@
-import { Controller, Get } from "@nestjs/common";
-import { TaskService } from './task.service';
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import {   TaskService } from './task.service';
+import type {Task} from './task.service';
 
-@Controller({})
+@Controller('/api')
 export class TaskController{
 
   taskService:TaskService
@@ -10,14 +11,20 @@ export class TaskController{
     this.taskService=taskService;
   }
 
-  @Get('/tasks')
-  getAllTasks(){
+  @Get('/all')
+  getAllTasks(@Query() query:any){
+    console.log(query)
     return  this.taskService.getTasks()
   }
 
   @Get('/home')
   getHome(){
     return 'Home page'
+  }
+
+  @Post('/tasks')
+  createTask( @Body() task:Task ){
+    return this.taskService.createTasks(task)
   }
 
 }
